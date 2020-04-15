@@ -23,3 +23,6 @@ cd into to project after cloning.
 # (3) click using chosen port to see the list of all available apis: http://localhost:{port}/api-docs.
 # (4) Register and verify a user.
 # (5) Have fun.
+# (6) click https://myaccount.google.com/lesssecureapps to allow your email to be used to send out emails.
+# NB* Make sure you turn of less secure apps after you are done
+
