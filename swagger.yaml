@@ -1,0 +1,965 @@
+swagger: "2.0"
+info:
+  description: "NODE EXPRESS MONGO"
+  version: "1.0.0"
+  title: "COVID TEST "
+tags:
+  externalDocs:
+    description: "Find out more"
+    url: "#"
+
+consumes:
+  - application/json
+produces:
+  - application/json
+schemes:
+  - "http"
+  - "https"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+
+paths:
+  # -----------------------------------------------------------USER API START------------------------------------------------------------
+  /api/user:
+
+    post:
+        tags:
+          - "User"
+        summary: "Create user"
+        description: "This can only be done by the logged in user."
+        operationId: "createUser"
+        produces:
+          - "application/json"
+        parameters:
+          - in: "body"
+            name: "user"
+            description: "Created user object"
+            required: true
+            schema:
+              $ref: "#/definitions/User"
+        responses:
+          default:
+            description: "successful operation"
+
+    get:
+      tags:
+        - "User"
+      summary: "get all users"
+      description: ""
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "Success"
+        404:
+          description: "No content"
+    
+  
+  /api/user/{userId}:
+    put:
+      tags:
+        - "User"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+        - "application/xml"
+        - "application/json"
+      security:
+        - Bearer: []
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "user id that need to be updated"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "user"
+          description: "Updated user object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+
+    delete:
+      tags:
+        - "User"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+        - "application/json"
+      security:
+        - Bearer: []
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "The user id that needs to be deleted"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+
+    get:
+      tags:
+        - "User"
+      summary: "Find user by ID"
+      description: "Returns a single user"
+      operationId: "getUserById"
+      produces:
+        - "application/json"
+      security:
+        - Bearer: []
+      parameters:
+        - name: "userId"
+          in: "path"
+          description: "ID of user to return"
+          required: true
+          type: "string"
+          format: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "User not found"
+
+  /api/user/login:
+    post:
+      tags:
+        - "User"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "user"
+          description: "Created user object"
+          required: true
+          schema:
+            $ref: "#/definitions/UserCred"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid username/password supplied"
+
+# =========================================================================Patient++++++++++++++++++++++++++++++++++++++++++++++++++++
+  /api/patient:
+     
+    post:
+        tags:
+          - "Patient"
+        summary: "Create patient"
+        description: "This can only be done by the logged in user."
+        operationId: "createPatient"
+        produces:
+          - "application/json"
+        security:
+        - Bearer: []
+        parameters:
+          - in: "body"
+            name: "patient"
+            description: "Created patient object"
+            required: true
+            schema:
+              $ref: "#/definitions/Patient"
+        responses:
+          default:
+            description: "successful operation"
+
+    get:
+        tags:
+          - "Patient"
+        summary: "get all patient"
+        description: ""
+        consumes:
+          - "application/json"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        responses:
+          200:
+            description: "Success"
+          404:
+            description: "No content" 
+
+  /api/patient/{patientId}:
+
+      put:
+        tags:
+          - "Patient"
+        summary: "Update patient"
+        description: "This can only be done by the logged in user."
+        operationId: "updatePatinet"
+        produces:
+          - "application/xml"
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "patienttId"
+            in: "path"
+            description: "patient id that need to be updated"
+            required: true
+            type: "string"
+          - in: "body"
+            name: "patient"
+            description: "Update patient object"
+            required: true
+            schema:
+              $ref: "#/definitions/Patient"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "Patient details not found"
+
+      delete:
+        tags:
+        - "Patient"
+      summary: "Delete patient"
+      description: "This can only be done by the logged in user."
+      operationId: "deletePatient"
+      produces:
+        - "application/json"
+      security:
+        - Bearer: []
+      parameters:
+        - name: "patientId"
+          in: "path"
+          description: "The patient id that needs to be deleted"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid id supplied"
+        404:
+          description: "Promotion not found"
+
+      get:
+        tags:
+          - "Patient"
+        summary: "Find patient by ID"
+        description: "Returns patient"
+        operationId: "getPatientById"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "patientId"
+            in: "path"
+            description: "ID of patient to return"
+            required: true
+            type: "string"
+            format: "string"
+        responses:
+          200:
+            description: "successful operation"
+          400:
+            description: "Invalid ID supplied"
+          404:
+            description: "Patient not found"  
+
+
+# =========================================================================token++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  /api/token/verify:
+     
+    post:
+        tags:
+          - "Token"
+        summary: "verify token"
+        description: "This can only be done by the logged in user."
+        operationId: "verifyToken"
+        produces:
+          - "application/json"
+        parameters:
+          - in: "body"
+            name: "token"
+            description: "Token verification"
+            required: true
+            schema:
+              $ref: "#/definitions/Token"
+        responses:
+          default:
+            description: "successful operation"
+
+   # =========================================================================sYMPTOM++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+  /api/symptom:
+
+      post:
+        tags:
+          - "Symptom"
+        summary: "Create a symptom"
+        description: "This can only be done by the logged in user."
+        operationId: "createSymptom"
+        produces:
+          - "application/json"
+        security:
+        - Bearer: []
+        parameters:
+          - in: "body"
+            name: "symptom"
+            description: "Created symptom object"
+            required: true
+            schema:
+              $ref: "#/definitions/Symptom"
+        responses:
+          default:
+            description: "successful operation"
+
+      get:
+          tags:
+            - "Symptom"
+          summary: "get all symptom"
+          description: ""
+          consumes:
+            - "application/json"
+          produces:
+            - "application/json"
+          security:
+            - Bearer: []
+          responses:
+            200:
+              description: "Success"
+            404:
+              description: "No content" 
+    
+  /api/symptom/{symptomId}:
+
+      put:
+        tags:
+          - "Symptom"
+        summary: "Update symptom"
+        description: "This can only be done by the logged in user."
+        operationId: "updateSymptom"
+        produces:
+          - "application/xml"
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "symptomId"
+            in: "path"
+            description: "symptom id that need to be updated"
+            required: true
+            type: "string"
+          - in: "body"
+            name: "symptom"
+            description: "Update symptom object"
+            required: true
+            schema:
+              $ref: "#/definitions/Symptom"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "Symptom details not found"
+
+      delete:
+        tags:
+          - "Symptom"
+        summary: "Delete symptom"
+        description: "This can only be done by the logged in user."
+        operationId: "deleteSymptom"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "symptomId"
+            in: "path"
+            description: "The symptom id that needs to be deleted"
+            required: true
+            type: "string"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "Symptom not found"
+
+      get:
+        tags:
+          - "Symptom"
+        summary: "Find symptom by ID"
+        description: "Returns symptom"
+        operationId: "getSymptomById"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "symptomId"
+            in: "path"
+            description: "ID of symptom to return"
+            required: true
+            type: "string"
+            format: "string"
+        responses:
+          200:
+            description: "successful operation"
+          400:
+            description: "Invalid ID supplied"
+          404:
+            description: "Symptom not found"  
+
+
+   # =========================================================================CovidTest++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+  /api/covidtest:
+
+      post:
+        tags:
+          - "CovidTest"
+        summary: "conduct a test"
+        description: "This can only be done by the logged in user."
+        operationId: "createCovidTest"
+        produces:
+          - "application/json"
+        security:
+        - Bearer: []
+        parameters:
+          - in: "body"
+            name: "covidtest"
+            description: "Created covidtest object"
+            required: true
+            schema:
+              $ref: "#/definitions/CovidTest"
+        responses:
+          default:
+            description: "successful operation"
+
+      get:
+          tags:
+            - "CovidTest"
+          summary: "get all covid tests"
+          description: ""
+          consumes:
+            - "application/json"
+          produces:
+            - "application/json"
+          security:
+            - Bearer: []
+          responses:
+            200:
+              description: "Success"
+            404:
+              description: "No content" 
+
+  /api/covidtest/{covidtestId}:
+
+      put:
+        tags:
+          - "CovidTest"
+        summary: "Update covid test conducted"
+        description: "This can only be done by the logged in user."
+        operationId: "updateCovideTest"
+        produces:
+          - "application/xml"
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "covidTestId"
+            in: "path"
+            description: "covidtest id that need to be updated"
+            required: true
+            type: "string"
+          - in: "body"
+            name: "covid"
+            description: "Update covid object"
+            required: true
+            schema:
+              $ref: "#/definitions/CovidTest"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "CovidTest details not found"
+
+      delete:
+        tags:
+          - "CovidTest"
+        summary: "Delete covidtest"
+        description: "This can only be done by the logged in user."
+        operationId: "deleteCovidTest"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "covidTestId"
+            in: "path"
+            description: "The CovidTest id that needs to be deleted"
+            required: true
+            type: "string"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "CovidTest not found"
+
+      get:
+        tags:
+          - "CovidTest"
+        summary: "Find covidtest by ID"
+        description: "Returns covidtest"
+        operationId: "getCovidTestById"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "covidTestId"
+            in: "path"
+            description: "ID of covidtest to return"
+            required: true
+            type: "string"
+            format: "string"
+        responses:
+          200:
+            description: "successful operation"
+          400:
+            description: "Invalid ID supplied"
+          404:
+            description: "CovidTest not found"  
+
+
+  # =========================================================================Country++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+  /api/country:
+        post:
+          tags:
+            - "Country"
+          summary: "create a country"
+          description: "This can only be done by the logged in user."
+          operationId: "createCountry"
+          produces:
+            - "application/json"
+          security:
+          - Bearer: []
+          parameters:
+            - in: "body"
+              name: "country"
+              description: "Created country object"
+              required: true
+              schema:
+                $ref: "#/definitions/Country"
+          responses:
+            default:
+              description: "successful operation"
+
+        get:
+            tags:
+              - "Country"
+            summary: "get all countries"
+            description: ""
+            consumes:
+              - "application/json"
+            produces:
+              - "application/json"
+            security:
+              - Bearer: []
+            responses:
+              200:
+                description: "Success"
+              404:
+                description: "No content" 
+
+  /api/country/{countryId}:
+
+      put:
+        tags:
+          - "Country"
+        summary: "Update country test conducted"
+        description: "This can only be done by the logged in user."
+        operationId: "updateCountryTest"
+        produces:
+          - "application/xml"
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "countryTestId"
+            in: "path"
+            description: "country id that need to be updated"
+            required: true
+            type: "string"
+          - in: "body"
+            name: "covid"
+            description: "Update country object"
+            required: true
+            schema:
+              $ref: "#/definitions/Country"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "Country details not found"
+
+      delete:
+        tags:
+          - "Country"
+        summary: "Delete country"
+        description: "This can only be done by the logged in user."
+        operationId: "deleteCountry"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "countryId"
+            in: "path"
+            description: "The country id that needs to be deleted"
+            required: true
+            type: "string"
+        responses:
+          400:
+            description: "Invalid id supplied"
+          404:
+            description: "Country not found"
+
+      get:
+        tags:
+          - "Country"
+        summary: "Find country by ID"
+        description: "Returns country"
+        operationId: "getCountryById"
+        produces:
+          - "application/json"
+        security:
+          - Bearer: []
+        parameters:
+          - name: "countryId"
+            in: "path"
+            description: "ID of country to return"
+            required: true
+            type: "string"
+            format: "string"
+        responses:
+          200:
+            description: "successful operation"
+          400:
+            description: "Invalid ID supplied"
+          404:
+            description: "Country not found"  
+
+
+
+
+  # =========================================================================Contact++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+  /api/contact:
+        post:
+          tags:
+            - "Contact"
+          summary: "create a contact"
+          description: "This can only be done by the logged in user."
+          operationId: "createContact"
+          produces:
+            - "application/json"
+          security:
+          - Bearer: []
+          parameters:
+            - in: "body"
+              name: "contact"
+              description: "Created contact object"
+              required: true
+              schema:
+                $ref: "#/definitions/Contact"
+          responses:
+            default:
+              description: "successful operation"
+
+        get:
+            tags:
+              - "Contact"
+            summary: "get all contacts"
+            description: ""
+            consumes:
+              - "application/json"
+            produces:
+              - "application/json"
+            security:
+              - Bearer: []
+            responses:
+              200:
+                description: "Success"
+              404:
+                description: "No content" 
+
+  /api/contact/{contactId}:
+
+          put:
+            tags:
+              - "Contact"
+            summary: "Update contact test conducted"
+            description: "This can only be done by the logged in user."
+            operationId: "updateContactTest"
+            produces:
+              - "application/xml"
+              - "application/json"
+            security:
+              - Bearer: []
+            parameters:
+              - name: "contacttId"
+                in: "path"
+                description: "contact id that need to be updated"
+                required: true
+                type: "string"
+              - in: "body"
+                name: "contact"
+                description: "Update contact object"
+                required: true
+                schema:
+                  $ref: "#/definitions/Contact"
+            responses:
+              400:
+                description: "Invalid id supplied"
+              404:
+                description: "Contact details not found"
+
+          delete:
+            tags:
+              - "Contact"
+            summary: "Delete contact"
+            description: "This can only be done by the logged in user."
+            operationId: "deleteContact"
+            produces:
+              - "application/json"
+            security:
+              - Bearer: []
+            parameters:
+              - name: "contactId"
+                in: "path"
+                description: "The contact id that needs to be deleted"
+                required: true
+                type: "string"
+            responses:
+              400:
+                description: "Invalid id supplied"
+              404:
+                description: "Contact not found"
+
+          get:
+            tags:
+              - "Contact"
+            summary: "Find contact by ID"
+            description: "Returns country"
+            operationId: "getContactById"
+            produces:
+              - "application/json"
+            security:
+              - Bearer: []
+            parameters:
+              - name: "contactId"
+                in: "path"
+                description: "ID of contact to return"
+                required: true
+                type: "string"
+                format: "string"
+            responses:
+              200:
+                description: "successful operation"
+              400:
+                description: "Invalid ID supplied"
+              404:
+                description: "Contact not found"  
+
+
+
+
+
+
+
+    
+
+       
+
+  
+
+
+
+
+definitions:
+  # schemas:
+  User:
+    type: object
+    required:
+      - firstName
+      - lastName
+      - email
+      - password
+      - mobileNumber
+    properties:
+      _id:
+        type: string
+        format: string
+        readOnly: true
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      mobileNumber:
+        type: string
+      password:
+        type: string
+
+  UserCred:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  Patient:
+   type: object
+   required:
+     - firstName
+     - lastName
+     - gender
+     - dateOfBirth
+   properties:
+    _id:
+      type: string
+      format: string
+      readOnly: true
+    firstName:
+      type: string  
+    lastName:
+      type: string
+    gender:
+      type: string
+    dateOfBirth:
+      type: string
+      format: date 
+
+
+  Token:
+    type: object
+    required:
+      - token
+    properties:
+      token:
+        type: string  
+
+
+  Symptom:
+   type: object
+   required:
+     - name
+   properties:
+    _id:
+      type: string
+      format: string
+      readOnly: true
+    name:
+      type: string  
+
+  CovidTest:
+   type: object
+   required:
+     - patientId
+   properties:
+    _id:
+      type: string
+      format: string
+      readOnly: true
+    patientId:
+      type: string
+    symptomList:
+      type: "array"
+      items:
+        $ref: "#/definitions/symptoms"
+
+  symptoms:
+   type: object
+   properties:
+    _id:
+      type: string
+      format: string
+
+ 
+  Country:
+    type: object
+    required:
+      - name
+    properties:
+      _id:
+        type: string
+        format: string
+        readOnly: true
+      name:
+        type: string
+    
+  
+
+  Contact:
+    type: object
+    required:
+      - patientId
+      - mobile
+      - address
+      - countryId
+    properties:
+      _id:
+        type: string
+        format: string
+        readOnly: true
+      patientId:
+        type: string
+      mobile:
+        type: string 
+      address:
+        type: string 
+      countryId:
+        type: string  
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+ 
