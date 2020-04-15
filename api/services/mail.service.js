@@ -11,7 +11,7 @@ function verifyEmail(params) {
         let transport = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: process.env.EMAIL,
+                user: process.env.EMAIL ,
                 pass: process.env.EMAILPASSWORD
             }
         });
