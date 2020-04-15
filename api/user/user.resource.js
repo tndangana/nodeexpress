@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt')
 
 exports.create = (req, res, next) => {
     userService.create(req.body)
-        .then(user => user ? res.status(201).json(user) : res.status(409).json({ message: "User already exists" }))
+        .then(user => user ? res.status(201).json({message:`You have succesfully registered ${req.body.email},Please check your email.A verification token has been sent`}) : res.status(409).json({ message: "User already exists" }))
         .catch(err => next(err));
 }
 
